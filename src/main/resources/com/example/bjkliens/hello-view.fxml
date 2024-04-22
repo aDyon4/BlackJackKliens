@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<VBox alignment="CENTER" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.bjKilens.HelloController">
+    <children>
+        <StackPane prefHeight="150.0" prefWidth="200.0">
+            <children>
+                <Arc fill="#186f11" length="180.0" radiusX="500.0" radiusY="450.0" startAngle="180.0" stroke="#654343" strokeType="INSIDE" type="ROUND" />
+                <Label prefHeight="183.0" prefWidth="120.0" style="-fx-border-color: #14570e; -fx-border-radius: 7;" translateY="120.0" />
+                <ImageView fitHeight="183.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" translateY="-120.0">
+                    <image>
+                        <!-- <Image url="@lapok/back.png" /> -->
+                    </image>
+                </ImageView>
+                <ImageView fitHeight="183.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" translateY="120.0" />
+                <HBox>
+                    <children>
+                        <Circle fill="#00ff26" radius="7.0" stroke="#00ff26" strokeType="INSIDE" />
+                        <Label alignment="CENTER" contentDisplay="CENTER" text="0" />
+                        <Button fx:id="exit" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onExitClick" style="-fx-background-color: red; -fx-font-weight: bold;" text="Kilépés" textFill="WHITE">
+                            <HBox.margin>
+                                <Insets left="3.0" top="4.0" />
+                            </HBox.margin>
+                        </Button>
+                    </children>
+                </HBox>
+            </children>
+        </StackPane>
+        <Label alignment="CENTER" contentDisplay="CENTER" text="00">
+            <font>
+                <Font name="Arial" size="24.0" />
+            </font>
+        </Label>
+        <HBox prefHeight="80.0" prefWidth="200.0" spacing="20.0">
+            <children>
+                <Label>
+                    <graphic>
+                        <ImageView fitHeight="100.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <!--  <Image url="@zsetonk.png" /> -->
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Label>
+                <Label>
+                    <graphic>
+                        <ImageView fitHeight="140.0" fitWidth="110.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <!--  <Image url="@zsetonp.png" /> -->
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Label>
+                <Label>
+                    <graphic>
+                        <ImageView fitHeight="150.0" fitWidth="110.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <!-- <Image url="@zsetonf.png" /> -->
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Label>
+                <Label>
+                    <graphic>
+                        <ImageView fitHeight="110.0" fitWidth="110.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <!--  <Image url="@zsetonz.png" /> -->
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Label>
+            </children></HBox>
+        <HBox prefHeight="100.0" prefWidth="200.0">
+            <children>
+                <VBox alignment="TOP_CENTER" prefHeight="80.0" prefWidth="100.0" spacing="10.0">
+                    <children>
+                        <TextField fx:id="tfBet" maxWidth="120.0" prefWidth="120.0" promptText="TÉT MEGTÉTELE" />
+                        <Button fx:id="bet" mnemonicParsing="false" onAction="#onBetClick" text="OSZTÁS" />
+                    </children>
+                    <HBox.margin>
+                        <Insets left="200.0" />
+                    </HBox.margin>
+                </VBox>
+                <Label prefWidth="400.0" />
+                <VBox prefHeight="200.0" prefWidth="100.0">
+                    <children>
+                        <Button fx:id="join" mnemonicParsing="false" onAction="#onClickPressed" prefWidth="140.0" style="-fx-background-color: green; -fx-font-weight: bold;" text="JÁTÉK!" textFill="WHITE">
+                            <font>
+                                <Font size="15.0" />
+                            </font>
+                            <VBox.margin>
+                                <Insets bottom="10.0" />
+                            </VBox.margin>
+                        </Button>
+                        <TextField fx:id="tfId" alignment="CENTER" prefWidth="140.0" text="10.201.2.5" />
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
+            <children>
+                <Label style="-fx-background-color: red; -fx-border-radius: 5;" textFill="#d7afaf">
+                    <graphic>
+                        <ImageView disable="true" fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@ikonok/stand.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Label>
+                <Label>
+                    <graphic>
+                        <ImageView disable="true" fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@ikonok/plus.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Label>
+            </children>
+        </HBox>
+    </children>
+</VBox>
