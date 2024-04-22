@@ -7,7 +7,7 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<VBox alignment="CENTER" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.bjKilens.HelloController">
+<VBox alignment="CENTER" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.bjkliens.HelloController">
     <children>
         <StackPane prefHeight="150.0" prefWidth="200.0">
             <children>
@@ -18,12 +18,12 @@
                         <!-- <Image url="@lapok/back.png" /> -->
                     </image>
                 </ImageView>
-                <ImageView fitHeight="183.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" translateY="120.0" />
+                <ImageView fx:id="ivLap" fitHeight="183.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" translateY="120.0" />
                 <HBox>
                     <children>
                         <Circle fill="#00ff26" radius="7.0" stroke="#00ff26" strokeType="INSIDE" />
                         <Label alignment="CENTER" contentDisplay="CENTER" text="0" />
-                        <Button fx:id="exit" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onExitClick" style="-fx-background-color: red; -fx-font-weight: bold;" text="Kilépés" textFill="WHITE">
+                        <Button fx:id="exit" alignment="TOP_RIGHT" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onExitClick" style="-fx-background-color: red; -fx-font-weight: bold;" text="Kilépés" textFill="WHITE">
                             <HBox.margin>
                                 <Insets left="3.0" top="4.0" />
                             </HBox.margin>
@@ -32,12 +32,12 @@
                 </HBox>
             </children>
         </StackPane>
-        <Label alignment="CENTER" contentDisplay="CENTER" text="00">
+        <Label fx:id="lbPont" alignment="CENTER" contentDisplay="CENTER" text="00">
             <font>
                 <Font name="Arial" size="24.0" />
             </font>
         </Label>
-        <HBox prefHeight="80.0" prefWidth="200.0" spacing="20.0">
+        <HBox alignment="CENTER" prefHeight="80.0" prefWidth="200.0" spacing="20.0">
             <children>
                 <Label>
                     <graphic>
@@ -78,19 +78,19 @@
             </children></HBox>
         <HBox prefHeight="100.0" prefWidth="200.0">
             <children>
-                <VBox alignment="TOP_CENTER" prefHeight="80.0" prefWidth="100.0" spacing="10.0">
+                <VBox alignment="TOP_CENTER" maxWidth="120.0" prefWidth="120.0" spacing="10.0">
                     <children>
-                        <TextField fx:id="tfBet" maxWidth="120.0" prefWidth="120.0" promptText="TÉT MEGTÉTELE" />
-                        <Button fx:id="bet" mnemonicParsing="false" onAction="#onBetClick" text="OSZTÁS" />
+                        <TextField fx:id="tfBet" maxWidth="120.0" prefHeight="25.0" prefWidth="120.0" promptText="TÉT MEGTÉTELE" />
+                        <Button fx:id="bet" maxHeight="25.0" mnemonicParsing="false" onAction="#onBetClick" prefHeight="25.0" prefWidth="140.0" style="-fx-background-color: lightblue; -fx-font-weight: bold;" text="OSZTÁS" />
                     </children>
                     <HBox.margin>
                         <Insets left="200.0" />
                     </HBox.margin>
                 </VBox>
                 <Label prefWidth="400.0" />
-                <VBox prefHeight="200.0" prefWidth="100.0">
+                <VBox maxWidth="120.0" prefWidth="120.0">
                     <children>
-                        <Button fx:id="join" mnemonicParsing="false" onAction="#onClickPressed" prefWidth="140.0" style="-fx-background-color: green; -fx-font-weight: bold;" text="JÁTÉK!" textFill="WHITE">
+                        <Button fx:id="join" maxHeight="25.0" mnemonicParsing="false" onAction="#onClickPressed" prefHeight="25.0" prefWidth="140.0" style="-fx-background-color: green; -fx-font-weight: bold;" text="Játék" textFill="WHITE">
                             <font>
                                 <Font size="15.0" />
                             </font>
@@ -98,7 +98,7 @@
                                 <Insets bottom="10.0" />
                             </VBox.margin>
                         </Button>
-                        <TextField fx:id="tfId" alignment="CENTER" prefWidth="140.0" text="10.201.2.5" />
+                        <TextField fx:id="tfId" alignment="CENTER" maxWidth="120.0" prefHeight="25.0" prefWidth="120.0" text="10.201.2.5" />
                     </children>
                 </VBox>
             </children>
@@ -114,7 +114,7 @@
                         </ImageView>
                     </graphic>
                 </Label>
-                <Label>
+                <Label onMousePressed="#onPlusPressed">
                     <graphic>
                         <ImageView disable="true" fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
                             <image>
