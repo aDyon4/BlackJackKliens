@@ -17,12 +17,16 @@ import java.util.Stack;
 public class HelloController {
 
 
-    @FXML private ImageView ivLap;
+    @FXML
+    private ImageView ivLap;
     @FXML private Label lbPont;
+    @FXML private Label lbTet;
+
     @FXML private ListView<String> lvList;
     @FXML private Button exit;
     @FXML private Button bet;
     @FXML private Button join;
+
     @FXML private TextField tfId;
     @FXML private TextField tfText;
     @FXML private TextField tfBet;
@@ -30,13 +34,17 @@ public class HelloController {
     DatagramSocket socket = null;
     Image[] lapok = new Image[8];
 
-    int randSzam = (int)(Math.random()*9)+2;
-    String[] randBetu = { "C", "D", "H", "S" };
-    int randBetuSzam = (int)(Math.random()*3);
-
-    Image lap = new Image(getClass().getResourceAsStream("lapok/"+randSzam+""+randBetu[randBetuSzam]+".png"));
+    int randSzam = (int) (Math.random() * 9) + 2;
+    String[] randBetu = {"C", "D", "H", "S"};
+    int randBetuSzam = (int) (Math.random() * 3);
+    Image lap = new Image(getClass().getResourceAsStream("lapok/" + randSzam + "" + randBetu[randBetuSzam] + ".png"));
     Image lapHata = new Image(getClass().getResourceAsStream("lapok/gray_back.png"));
-    public void initialize(){
+    int osszesPenz = 20000;
+    int plusTet = 0;
+    int tetOtven = 0, tetSzaz = 0, tetKettoOtven = 0, tetOtszaz = 0;
+
+
+    public void initialize() {
 
         try {
             socket = new DatagramSocket(678);
@@ -58,10 +66,10 @@ public class HelloController {
         tfBet.setDisable(true);
     }
 
-    int osszesPent = 0;
-    @FXML private void onClickPressed(){
-        osszesPent = 20000;
-        String zseton = "join:"+osszesPent;
+
+    @FXML
+    private void onClickPressed() {
+        String zseton = "join:" + osszesPenz;
         String id = tfId.getText();
         //System.out.printf("id: %s", id);
         kuld(zseton, "192.168.1.212", 688);
@@ -70,20 +78,20 @@ public class HelloController {
         tfBet.setDisable(false);
         join.setDisable(true);
     }
-
-    @FXML private void onBetClick(){
-
-        int tet = Integer.parseInt(tfBet.getText());
-        if(tet<=osszesPent){
-            ivLap.setImage(lap);
-            lbPont.setText(randSzam+"");
-            kuld("bet:"+tet, "192.168.1.212", 688);
-        }
-        else System.out.println("nincs ennyi pénzed");
+    private void setUjLap(String szin, int szam){
+        ivLap.setImage(new Image(getClass().getResourceAsStream("lapok/" + szam + "" + szin + ".png")));
+        lbPont.setText(szam + "");
     }
-
-    @FXML private void onPlusPressed(){
-            kuld("plus:"+100, "192.168.1.212", 688);
+    @FXML
+    private void onBetClick() {
+        int tet = Integer.parseInt(tfBet.getText());
+        if (tet <= osszesPenz) {
+            setUjLap(randBetu[randBetuSzam], randSzam);
+            /*ivLap.setImage(lap);*/
+            randSzam+=Integer.parseInt(lbPont.getText());
+            /*lbPont.setText(randSzam + "");*/
+            kuld("bet:" + tet, "192.168.1.212", 688);
+        } else System.out.println("nincs ennyi pénzed");
     }
 
     private void kuld(String uzenet, String ip, int port) {
@@ -98,9 +106,12 @@ public class HelloController {
         }
     }
 
-    @FXML private void onExitClick(){
+    @FXML
+    private void onExitClick() {
         kuld("exit", "192.168.1.212", 688);
+
         ivLap.setImage(lapHata);
+        plusTet = 0;
         exit.setDisable(true);
         bet.setDisable(true);
         tfBet.setDisable(true);
@@ -110,11 +121,11 @@ public class HelloController {
     private void fogad() {
         byte[] data = new byte[256];
         DatagramPacket packet = new DatagramPacket(data, data.length);
-        while (true){
+        while (true) {
             try {
                 socket.receive(packet);
                 String uzenet = new String(packet.getData(), 0, packet.getLength(), "utf-8");
-                String ip  = packet.getAddress().getHostAddress();
+                String ip = packet.getAddress().getHostAddress();
                 int port = packet.getPort();
                 Platform.runLater(() -> onFogad(uzenet, ip, port));
             } catch (IOException e) {
@@ -123,17 +134,51 @@ public class HelloController {
         }
     }
 
-    private void onFogad(String uzenet, String ip, int port){
+    private void onFogad(String uzenet, String ip, int port) {
         System.out.printf("%s", uzenet);
         String[] s = uzenet.split(":");
-
-        if(s[0].equals("joined")){
+        if (s[0].equals("joined")) {
             String tet = s[1];
             System.out.printf("ÖSSZEG: %s", tet);
-            kuld(tet, ip , port);
+            kuld(tet, ip, port);
+        }
+        if(s[0].equals("paid")){
+            osszesPenz = Integer.parseInt(s[1]);
+            System.out.printf("\n%d pénzed maradt\n", osszesPenz);
         }
     }
 
 
+    @FXML
+    private void onPlusPressed() {
+        kuld("plus:" + plusTet, "192.168.1.212", 688);
+        plusTet = 0;
+        lbTet.setText(plusTet+"");
+        ivLap.setImage(lap);
+        lbPont.setText(randSzam + "");
+        randSzam+=Integer.parseInt(lbPont.getText());
+    }
+    @FXML
+    private void onOtvenPressed() {
+        if(osszesPenz > 50) { tetOtven++; osszesPenz-=50; plusTet+=50; lbTet.setText(plusTet+"");}
+        else { lbTet.setText("Nincs elegendő pénzed"); }
+    }
 
+    @FXML
+    private void onSzazPressed() {
+        if(osszesPenz > 100) { tetSzaz++; osszesPenz-=100; plusTet+=100; lbTet.setText(plusTet+"");  lbTet.setText(plusTet+"");}
+        else { lbTet.setText("Nincs elegendő pénzed"); }
+    }
+
+    @FXML
+    private void onKettoOtvenPressed() {
+        if(osszesPenz > 250) { tetKettoOtven++; osszesPenz-=250; plusTet+=250; lbTet.setText(plusTet+""); }
+        else { lbTet.setText("Nincs elegendő pénzed"); }
+    }
+
+    @FXML
+    private void onOtszazPressed() {
+        if(osszesPenz > 500) { tetOtszaz++; osszesPenz-=500; plusTet+=500; lbTet.setText(plusTet+"");}
+        else { lbTet.setText("Nincs elegendő pénzed"); }
+    }
 }

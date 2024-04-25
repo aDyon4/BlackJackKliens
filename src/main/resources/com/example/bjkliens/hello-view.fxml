@@ -39,7 +39,7 @@
         </Label>
         <HBox alignment="CENTER" prefHeight="80.0" prefWidth="200.0" spacing="20.0">
             <children>
-                <Label>
+                <Label onMousePressed="#onOtvenPressed" text="50">
                     <graphic>
                         <ImageView fitHeight="100.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
                             <image>
@@ -48,7 +48,7 @@
                         </ImageView>
                     </graphic>
                 </Label>
-                <Label>
+                <Label onMousePressed="#onSzazPressed" text="100">
                     <graphic>
                         <ImageView fitHeight="140.0" fitWidth="110.0" pickOnBounds="true" preserveRatio="true">
                             <image>
@@ -57,7 +57,7 @@
                         </ImageView>
                     </graphic>
                 </Label>
-                <Label>
+                <Label onMousePressed="#onKettoOtvenPressed" text="250">
                     <graphic>
                         <ImageView fitHeight="150.0" fitWidth="110.0" pickOnBounds="true" preserveRatio="true">
                             <image>
@@ -66,7 +66,7 @@
                         </ImageView>
                     </graphic>
                 </Label>
-                <Label>
+                <Label onMousePressed="#onOtszazPressed" text="500">
                     <graphic>
                         <ImageView fitHeight="110.0" fitWidth="110.0" pickOnBounds="true" preserveRatio="true">
                             <image>
@@ -114,15 +114,20 @@
                         </ImageView>
                     </graphic>
                 </Label>
-                <Label onMousePressed="#onPlusPressed">
-                    <graphic>
-                        <ImageView disable="true" fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@ikonok/plus.png" />
-                            </image>
-                        </ImageView>
-                    </graphic>
-                </Label>
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Label fx:id="lbTet" text="0" />
+                      <Label onMousePressed="#onPlusPressed">
+                          <graphic>
+                              <ImageView disable="true" fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
+                                  <image>
+                                      <Image url="@ikonok/plus.png" />
+                                  </image>
+                              </ImageView>
+                          </graphic>
+                      </Label>
+               </children>
+            </VBox>
             </children>
         </HBox>
     </children>
