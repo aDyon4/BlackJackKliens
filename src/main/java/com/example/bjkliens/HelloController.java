@@ -8,6 +8,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 
 import java.io.IOException;
@@ -16,11 +17,16 @@ import java.util.Stack;
 
 public class HelloController {
 
-
-    @FXML
-    private ImageView ivLap;
+    @FXML private Pane pnLapok;
+    @FXML private ImageView ivLap;
     @FXML private Label lbPont;
     @FXML private Label lbTet;
+    @FXML private Label lbOt;
+    @FXML private Label lbHuszonot;
+    @FXML private Label lbOtven;
+    @FXML private Label lbSzaz;
+    @FXML private Label lbHit;
+    @FXML private Label lbStand;
 
     @FXML private ListView<String> lvList;
     @FXML private Button exit;
@@ -29,15 +35,14 @@ public class HelloController {
 
     @FXML private TextField tfId;
     @FXML private TextField tfText;
-    @FXML private TextField tfBet;
 
     DatagramSocket socket = null;
     Image[] lapok = new Image[8];
 
-    int randSzam = (int) (Math.random() * 9) + 2;
+    int randSzam = 0;
     String[] randBetu = {"C", "D", "H", "S"};
-    int randBetuSzam = (int) (Math.random() * 3);
-    Image lap = new Image(getClass().getResourceAsStream("lapok/" + randSzam + "" + randBetu[randBetuSzam] + ".png"));
+    int randBetuSzam = 0;
+    //Image lap = new Image(getClass().getResourceAsStream("lapok/" + randSzam + "" + randBetu[randBetuSzam] + ".png"));
     Image lapHata = new Image(getClass().getResourceAsStream("lapok/gray_back.png"));
     int osszesPenz = 20000;
     int plusTet = 0;
@@ -63,35 +68,51 @@ public class HelloController {
         join.setDisable(false);
         exit.setDisable(true);
         bet.setDisable(true);
-        tfBet.setDisable(true);
+        lbOt.setDisable(true);
+        lbHuszonot.setDisable(true);
+        lbOtven.setDisable(true);
+        lbSzaz.setDisable(true);
+        lbHit.setDisable(true);
+        lbStand.setDisable(true);
     }
 
 
-    @FXML
-    private void onClickPressed() {
+    @FXML private void onClickPressed() {
         String zseton = "join:" + osszesPenz;
         String id = tfId.getText();
         //System.out.printf("id: %s", id);
         kuld(zseton, "192.168.1.212", 688);
+        join.setDisable(true);
         exit.setDisable(false);
         bet.setDisable(false);
-        tfBet.setDisable(false);
-        join.setDisable(true);
+        lbOt.setDisable(false);
+        lbHuszonot.setDisable(false);
+        lbOtven.setDisable(false);
+        lbSzaz.setDisable(false);
+        lbHit.setDisable(true);
+        lbStand.setDisable(true);
+
     }
-    private void setUjLap(String szin, int szam){
+    /*private void setUjLap(String szin, int szam){
         ivLap.setImage(new Image(getClass().getResourceAsStream("lapok/" + szam + "" + szin + ".png")));
         lbPont.setText(szam + "");
-    }
-    @FXML
-    private void onBetClick() {
-        int tet = Integer.parseInt(tfBet.getText());
+    }*/
+    @FXML private void onBetClick() {
+        int tet = Integer.parseInt(lbTet.getText());
         if (tet <= osszesPenz) {
-            setUjLap(randBetu[randBetuSzam], randSzam);
+            //setUjLap(randBetu[randBetuSzam], randSzam);
             /*ivLap.setImage(lap);*/
             randSzam+=Integer.parseInt(lbPont.getText());
             /*lbPont.setText(randSzam + "");*/
             kuld("bet:" + tet, "192.168.1.212", 688);
         } else System.out.println("nincs ennyi pénzed");
+        lapokAdasa();lapokAdasa();
+        lbOt.setDisable(true);
+        lbHuszonot.setDisable(true);
+        lbOtven.setDisable(true);
+        lbSzaz.setDisable(true);
+        lbHit.setDisable(false);
+        lbStand.setDisable(false);
     }
 
     private void kuld(String uzenet, String ip, int port) {
@@ -109,13 +130,19 @@ public class HelloController {
     @FXML
     private void onExitClick() {
         kuld("exit", "192.168.1.212", 688);
-
+        pnLapok.getChildren().clear();
+        lbTet.setText("0");
         ivLap.setImage(lapHata);
         plusTet = 0;
+        join.setDisable(false);
         exit.setDisable(true);
         bet.setDisable(true);
-        tfBet.setDisable(true);
-        join.setDisable(false);
+        lbOt.setDisable(true);
+        lbHuszonot.setDisable(true);
+        lbOtven.setDisable(true);
+        lbSzaz.setDisable(true);
+        lbHit.setDisable(true);
+        lbStand.setDisable(true);
     }
 
     private void fogad() {
@@ -148,37 +175,42 @@ public class HelloController {
         }
     }
 
-
-    @FXML
-    private void onPlusPressed() {
-        kuld("plus:" + plusTet, "192.168.1.212", 688);
-        plusTet = 0;
-        lbTet.setText(plusTet+"");
-        ivLap.setImage(lap);
-        lbPont.setText(randSzam + "");
-        randSzam+=Integer.parseInt(lbPont.getText());
+    int db = 0;
+    int lapokSzam = 0;
+    @FXML private void onHitPressed() {
+        kuld("hit:" + plusTet, "192.168.1.212", 688);
+        lapokAdasa();
     }
-    @FXML
-    private void onOtvenPressed() {
+    @FXML private void onOtPressed() {
+        if(osszesPenz > 5) { tetKettoOtven++; osszesPenz-=5; plusTet+=5; lbTet.setText(plusTet+""); }
+        else { lbTet.setText("Nincs elegendő pénzed"); }
+    }
+    @FXML private void onHuszonotPressed() {
+        if(osszesPenz > 25) { tetSzaz++; osszesPenz-=25; plusTet+=25; lbTet.setText(plusTet+"");}
+        else { lbTet.setText("Nincs elegendő pénzed"); }
+    }
+    @FXML private void onOtvenPressed() {
         if(osszesPenz > 50) { tetOtven++; osszesPenz-=50; plusTet+=50; lbTet.setText(plusTet+"");}
         else { lbTet.setText("Nincs elegendő pénzed"); }
     }
-
-    @FXML
-    private void onSzazPressed() {
-        if(osszesPenz > 100) { tetSzaz++; osszesPenz-=100; plusTet+=100; lbTet.setText(plusTet+"");  lbTet.setText(plusTet+"");}
+    @FXML private void onSzazPressed() {
+        if(osszesPenz > 100) { tetOtszaz++; osszesPenz-=100; plusTet+=100; lbTet.setText(plusTet+"");}
         else { lbTet.setText("Nincs elegendő pénzed"); }
     }
 
-    @FXML
-    private void onKettoOtvenPressed() {
-        if(osszesPenz > 250) { tetKettoOtven++; osszesPenz-=250; plusTet+=250; lbTet.setText(plusTet+""); }
-        else { lbTet.setText("Nincs elegendő pénzed"); }
-    }
 
-    @FXML
-    private void onOtszazPressed() {
-        if(osszesPenz > 500) { tetOtszaz++; osszesPenz-=500; plusTet+=500; lbTet.setText(plusTet+"");}
-        else { lbTet.setText("Nincs elegendő pénzed"); }
+    private void lapokAdasa(){
+        int randSzam = (int) (Math.random() * 9) + 2;
+        randSzam = (int) (Math.random() * 9) + 2;
+        int randBetuSzam = (int) (Math.random() * 3);
+        ImageView kartya = new ImageView( new Image(getClass().getResourceAsStream("lapok/" + randSzam + "" + randBetu[randBetuSzam] + ".png")));
+        lapokSzam = randSzam+Integer.parseInt(lbPont.getText());
+        db++;
+        kartya.setFitWidth(120);
+        kartya.setFitHeight(183);
+        kartya.setX(10+60*db);
+        lbPont.setText(lapokSzam + "");
+        pnLapok.getChildren().add(kartya);
     }
 }
+
