@@ -1,4 +1,4 @@
-package com.example.bjkliens;
+package com.example.iskolabjkliens;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -16,6 +16,8 @@ import java.net.*;
 import java.util.Stack;
 
 public class HelloController {
+    String ValosIp = "";
+    int osszesPenz = 4000;
 
     @FXML private Pane pnLapok;
     @FXML private ImageView ivLap;
@@ -27,6 +29,7 @@ public class HelloController {
     @FXML private Label lbSzaz;
     @FXML private Label lbHit;
     @FXML private Label lbStand;
+    @FXML private Label lbOsszeg;
 
     @FXML private ListView<String> lvList;
     @FXML private Button exit;
@@ -44,7 +47,6 @@ public class HelloController {
     int randBetuSzam = 0;
     //Image lap = new Image(getClass().getResourceAsStream("lapok/" + randSzam + "" + randBetu[randBetuSzam] + ".png"));
     Image lapHata = new Image(getClass().getResourceAsStream("lapok/gray_back.png"));
-    int osszesPenz = 20000;
     int plusTet = 0;
     int tetOtven = 0, tetSzaz = 0, tetKettoOtven = 0, tetOtszaz = 0;
 
@@ -79,9 +81,11 @@ public class HelloController {
 
     @FXML private void onClickPressed() {
         String zseton = "join:" + osszesPenz;
+        lbOsszeg.setText(osszesPenz+"");
+        String ValosIp = tfId.getText();
         String id = tfId.getText();
         //System.out.printf("id: %s", id);
-        kuld(zseton, "192.168.1.212", 688);
+        kuld(zseton, ValosIp, 678);
         join.setDisable(true);
         exit.setDisable(false);
         bet.setDisable(false);
@@ -97,14 +101,15 @@ public class HelloController {
         ivLap.setImage(new Image(getClass().getResourceAsStream("lapok/" + szam + "" + szin + ".png")));
         lbPont.setText(szam + "");
     }*/
+    int tet = 0;
     @FXML private void onBetClick() {
-        int tet = Integer.parseInt(lbTet.getText());
+        tet = Integer.parseInt(lbTet.getText());
         if (tet <= osszesPenz) {
             //setUjLap(randBetu[randBetuSzam], randSzam);
             /*ivLap.setImage(lap);*/
             randSzam+=Integer.parseInt(lbPont.getText());
             /*lbPont.setText(randSzam + "");*/
-            kuld("bet:" + tet, "192.168.1.212", 688);
+            kuld("bet:" + tet, ValosIp, 678);
         } else System.out.println("nincs ennyi pénzed");
         lapokAdasa();lapokAdasa();
         lbOt.setDisable(true);
@@ -121,16 +126,18 @@ public class HelloController {
             InetAddress ipv4 = Inet4Address.getByName(ip);
             DatagramPacket packet = new DatagramPacket(adat, adat.length, ipv4, port);
             socket.send(packet);
-            System.out.printf("%s:%d -> %s\n", ip, port, uzenet);
+            //System.out.printf("%s:%d -> %s\n", ip, port, uzenet);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    @FXML
-    private void onExitClick() {
-        kuld("exit", "192.168.1.212", 688);
+    @FXML private void onExitClick() {
+        kuld("exit", ValosIp, 678);
+        lbPont.setText("00");
+        tet = 0;
         pnLapok.getChildren().clear();
+        lbOsszeg.setText(osszesPenz+"");
         lbTet.setText("0");
         ivLap.setImage(lapHata);
         plusTet = 0;
@@ -173,44 +180,69 @@ public class HelloController {
             osszesPenz = Integer.parseInt(s[1]);
             System.out.printf("\n%d pénzed maradt\n", osszesPenz);
         }
+        else if(s[0].equals("balance")){
+            lbHit.setDisable(false);
+            bet.setDisable(false);
+        }
     }
 
     int db = 0;
     int lapokSzam = 0;
     @FXML private void onHitPressed() {
-        kuld("hit:" + plusTet, "192.168.1.212", 688);
+        kuld("hit:" + plusTet, ValosIp, 678);
         lapokAdasa();
     }
     @FXML private void onOtPressed() {
-        if(osszesPenz > 5) { tetKettoOtven++; osszesPenz-=5; plusTet+=5; lbTet.setText(plusTet+""); }
-        else { lbTet.setText("Nincs elegendő pénzed"); }
+        if(osszesPenz > 5) { tetKettoOtven++; osszesPenz-=5; tet+=5; lbTet.setText(tet+""); }
+        else {  tet=osszesPenz; lbTet.setText("Nincs elegendő pénzed ("+osszesPenz+")"); }
     }
     @FXML private void onHuszonotPressed() {
-        if(osszesPenz > 25) { tetSzaz++; osszesPenz-=25; plusTet+=25; lbTet.setText(plusTet+"");}
-        else { lbTet.setText("Nincs elegendő pénzed"); }
+        if(osszesPenz > 25) { tetSzaz++; osszesPenz-=25; tet+=25; lbTet.setText(tet+"");}
+        else {  tet=osszesPenz; lbTet.setText("Nincs elegendő pénzed ("+osszesPenz+")"); }
     }
     @FXML private void onOtvenPressed() {
-        if(osszesPenz > 50) { tetOtven++; osszesPenz-=50; plusTet+=50; lbTet.setText(plusTet+"");}
-        else { lbTet.setText("Nincs elegendő pénzed"); }
+        if(osszesPenz > 50) { tetOtven++; osszesPenz-=50; tet+=50; lbTet.setText(tet+"");}
+        else {  tet=osszesPenz; lbTet.setText("Nincs elegendő pénzed ("+osszesPenz+")"); }
     }
     @FXML private void onSzazPressed() {
-        if(osszesPenz > 100) { tetOtszaz++; osszesPenz-=100; plusTet+=100; lbTet.setText(plusTet+"");}
-        else { lbTet.setText("Nincs elegendő pénzed"); }
+        if(osszesPenz > 100) { tetOtszaz++; osszesPenz-=100; tet+=100; lbTet.setText(tet+"");}
+        else {  tet=osszesPenz; lbTet.setText("Nincs elegendő pénzed ("+osszesPenz+")"); }
     }
 
+    @FXML private void onStandPressed(){
+        kuld("stand", ValosIp, 678);
+        System.out.printf("balance: %d", osszesPenz);
+        lbOsszeg.setText(osszesPenz+"");
+        stand();
+    }
+    private void stand(){
+        lbHit.setDisable(true);
+        bet.setDisable(true);
+    }
 
+    String[] teljes_lista = { "", "", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Q", "J", "K", "A" };
+    int[] teljes_lista_ertekek = { 0, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10,10, 10 };
     private void lapokAdasa(){
-        int randSzam = (int) (Math.random() * 9) + 2;
-        randSzam = (int) (Math.random() * 9) + 2;
-        int randBetuSzam = (int) (Math.random() * 3);
-        ImageView kartya = new ImageView( new Image(getClass().getResourceAsStream("lapok/" + randSzam + "" + randBetu[randBetuSzam] + ".png")));
-        lapokSzam = randSzam+Integer.parseInt(lbPont.getText());
+        int betu_szam_rand = (int)(Math.random() * 13)+2;
+        int randBetuSzam = (int)(Math.random() * 3);
+        lapokSzam = teljes_lista_ertekek[betu_szam_rand]+Integer.parseInt(lbPont.getText());
+        ImageView kartya = new ImageView( new Image(getClass().getResourceAsStream("lapok/" + teljes_lista[betu_szam_rand] + "" + randBetu[randBetuSzam] + ".png")));
         db++;
         kartya.setFitWidth(120);
         kartya.setFitHeight(183);
         kartya.setX(10+60*db);
         lbPont.setText(lapokSzam + "");
         pnLapok.getChildren().add(kartya);
+
+        if(lapokSzam>21){
+            onStandPressed();
+            lbPont.setText("Besokaltál tesó ("+lbPont.getText()+")");
+        }
+        else if(lapokSzam == 21){
+            onStandPressed();
+            lbPont.setText("jo vagy, ez 21:)");
+        }
+
+
     }
 }
-
