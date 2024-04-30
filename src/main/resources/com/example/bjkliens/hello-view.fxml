@@ -7,7 +7,7 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<VBox alignment="CENTER" maxWidth="500.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.bjkliens.HelloController">
+<VBox alignment="CENTER" maxWidth="500.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.iskolabjkliens.HelloController">
     <children>
         <StackPane maxWidth="1.7976931348623157E308">
             <children>
@@ -20,7 +20,8 @@
                 </ImageView>
                 <ImageView fx:id="ivLap" fitHeight="183.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" translateY="120.0" />
                 <Pane fx:id="pnLapok" maxHeight="183.0" maxWidth="240.0" prefHeight="183.0" prefWidth="240.0" translateY="120.0" />
-                  <Button fx:id="exit" alignment="TOP_RIGHT" contentDisplay="TOP" mnemonicParsing="false" onAction="#onExitClick" style="-fx-background-color: red; -fx-font-weight: bold;" text="Kilépés" textFill="WHITE" translateX="-465.0" translateY="-205.0" />
+            <Label fx:id="lbOsszeg" alignment="TOP_LEFT" text="Összeg" translateX="465.0" translateY="-205.0" />
+                <Button fx:id="exit" alignment="TOP_RIGHT" contentDisplay="TOP" mnemonicParsing="false" onAction="#onExitClick" style="-fx-background-color: red; -fx-font-weight: bold;" text="Kilépés" textFill="WHITE" translateX="-465.0" translateY="-205.0" />
             </children>
         </StackPane>
         <Label fx:id="lbPont" alignment="CENTER" contentDisplay="CENTER" text="00">
@@ -67,7 +68,7 @@
                     </graphic>
                 </Label>
             </children></HBox>
-            <Label fx:id="lbTet" text="5" />
+        <Label fx:id="lbTet" text="0" />
         <HBox prefHeight="100.0" prefWidth="200.0">
             <children>
                 <VBox alignment="TOP_CENTER" maxWidth="120.0" prefWidth="120.0" spacing="10.0">
@@ -96,22 +97,21 @@
         </HBox>
         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
             <children>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
-               <children>
-                      <Label fx:id="lbStand" textFill="WHITE">
-                          <graphic>
-                              <ImageView disable="true" fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
-                                  <image>
-                                      <Image url="@ikonok/stand.png" />
-                                  </image>
-                              </ImageView>
-                          </graphic>
-                      </Label>
-                  <Label text="STAND" />
-               </children>
-            </VBox>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
-               <children>
+                <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                    <children>
+                        <Label fx:id="lbStand" onMousePressed="#onStandPressed" textFill="WHITE">
+                            <graphic>
+                                <ImageView disable="true" fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@ikonok/stand.png" />
+                           </image></ImageView>
+                            </graphic>
+                        </Label>
+                        <Label text="STAND" />
+                    </children>
+                </VBox>
+                <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                    <children>
                         <Label fx:id="lbHit" onMousePressed="#onHitPressed">
                             <graphic>
                                 <ImageView disable="true" fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
@@ -121,9 +121,9 @@
                                 </ImageView>
                             </graphic>
                         </Label>
-                  <Label text="HIT" />
-               </children>
-            </VBox>
+                        <Label text="HIT" />
+                    </children>
+                </VBox>
             </children>
         </HBox>
     </children>
